@@ -33,6 +33,7 @@ SOFTWARE.
 #include "Core/EditorCommon.hpp"
 #include "ECS/Components/CameraComponent.hpp"
 #include "ECS/Components/EntityDataComponent.hpp"
+#include "ECS/Components/AtmosphereComponent.hpp"
 #include "ECS/Components/FreeLookComponent.hpp"
 #include "ECS/Components/LightComponent.hpp"
 #include "ECS/Components/MeshRendererComponent.hpp"
@@ -157,6 +158,8 @@ namespace Lina::Editor
                     map[categoryStr].push_back(std::make_pair(std::string(title), tid));
             }
         }
+
+        //map["Default"].push_back(std::make_pair(std::string("Atmosphere Component"), GetTypeID<ECS::AtmosphereComponent>()));
 
         return map;
     }
@@ -451,6 +454,42 @@ namespace Lina::Editor
                 {
                     if (debugProperty.get(instance).cast<bool>())
                         Drawer_Debug(tid, ent);
+                }
+
+                if (resolvedData == entt::resolve<ECS::AtmosphereComponent>())
+                {
+                    auto& atmosphereComponent = ECS::Registry::Get()->get<ECS::AtmosphereComponent>(ent);
+
+                    // Draw UI elements for each property of AtmosphereComponent
+                    ImGui::Text("Atmosphere Component");
+
+                    // Fluid Density
+                    float fluidDensity = atmosphereComponent.getFluidDensity();
+                    if (ImGui::DragFloat("Fluid Density", &fluidDensity, 0.1f, 0.0f, 1000.0f))
+                    {
+                        atmosphereComponent.setFluidDensity(fluidDensity);
+                    }
+
+                    // Fluid Speed
+                    float fluidSpeed = atmosphereComponent.getFluidSpeed();
+                    if (ImGui::DragFloat("Fluid Speed", &fluidSpeed, 0.1f, 0.0f, 1000.0f))
+                    {
+                        atmosphereComponent.setFluidSpeed(fluidSpeed);
+                    }
+
+                    // Altitude
+                    float altitude = atmosphereComponent.getAltitude();
+                    if (ImGui::DragFloat("Altitude", &altitude, 1.0f, -1000.0f, 1000.0f))
+                    {
+                        atmosphereComponent.setAltitude(altitude);
+                    }
+
+                    // Gravity
+                    float gravity = atmosphereComponent.getGravity();
+                    if (ImGui::DragFloat("Gravity", &gravity, 0.1f, -100.0f, 100.0f))
+                    {
+                        atmosphereComponent.setGravity(gravity);
+                    }
                 }
             }
         }

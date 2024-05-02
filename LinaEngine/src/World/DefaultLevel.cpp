@@ -31,6 +31,7 @@ SOFTWARE.
 #include "ECS/Components/EntityDataComponent.hpp"
 #include "ECS/Components/LightComponent.hpp"
 #include "ECS/Components/CameraComponent.hpp"
+#include "ECS/Components/AtmosphereComponent.hpp"
 
 namespace Lina::World
 {
@@ -62,6 +63,10 @@ namespace Lina::World
         cameraComponent.m_isActive = true;
         camData.SetLocation(Vector3(0, 0.5f, -5));
 
+        ECS::Entity atmosphere     = m_registry.CreateEntity("Default Atmosphere");
+        auto&       atmosphereData = m_registry.get<ECS::EntityDataComponent>(atmosphere);
+        auto&       atmosphereComponent = m_registry.emplace<ECS::AtmosphereComponent>(atmosphere);
+        atmosphereData.SetLocation(Vector3(0, 0, 0));
     }
 
 } // namespace Lina::World

@@ -60,6 +60,7 @@ set (LINACOMMON_SOURCES
 	src/ECS/Registry.cpp
 	src/ECS/Components/EntityDataComponent.cpp
 	src/ECS/Components/PhysicsComponent.cpp
+	src/ECS/Components/AtmosphereComponent.cpp
 	
 	# Reosurces
 	src/Resources/ResourceStorage.cpp
@@ -133,6 +134,7 @@ set(LINACOMMON_HEADERS
 	include/Math/Plane.hpp
 	
 	#ECS
+	include/ECS/Components/AtmosphereComponent.hpp
 	include/ECS/Components/EntityDataComponent.hpp
 	include/ECS/Components/PhysicsComponent.hpp
 	include/ECS/Registry.hpp

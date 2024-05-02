@@ -54,14 +54,15 @@ SOFTWARE.
 #include "ECS/Components/PhysicsComponent.hpp"
 
 //INC_BEGIN - !! DO NOT MODIFY THIS LINE !!
+#include "ECS/Components/AtmosphereComponent.hpp"
 #include "ECS/Components/PhysicsComponent.hpp"
 #include "ECS/Components/EntityDataComponent.hpp"
-#include "ECS/Components/ModelNodeComponent.hpp"
 #include "ECS/Components/CameraComponent.hpp"
 #include "ECS/Components/LightComponent.hpp"
 #include "ECS/Components/LightComponent.hpp"
 #include "ECS/Components/LightComponent.hpp"
 #include "ECS/Components/LightComponent.hpp"
+#include "ECS/Components/ModelNodeComponent.hpp"
 #include "ECS/Components/ReflectionAreaComponent.hpp"
 #include "ECS/Components/SpriteRendererComponent.hpp"
 #include "ECS/Components/FreeLookComponent.hpp"
@@ -189,6 +190,18 @@ namespace Lina
     void ReflectionRegistry::RegisterReflectedComponents()
     {
         //REGFUNC_BEGIN - !! DO NOT CHANGE THIS LINE !!
+entt::meta<ECS::AtmosphereComponent>().type().props(std::make_pair("Title"_hs, "Atmosphere Component"), std::make_pair("Icon"_hs,ICON_FA_CLOUD), std::make_pair("Category"_hs,""), std::make_pair("CanAddComponent"_hs, "0"));
+entt::meta<ECS::AtmosphereComponent>().data<&ECS::AtmosphereComponent::m_isEnabled>("m_isEnabled"_hs);
+entt::meta<ECS::AtmosphereComponent>().func<&REF_CloneComponent<ECS::AtmosphereComponent>, entt::as_void_t>("clone"_hs);
+entt::meta<ECS::AtmosphereComponent>().func<&REF_SerializeComponent<ECS::AtmosphereComponent>, entt::as_void_t>("serialize"_hs);
+entt::meta<ECS::AtmosphereComponent>().func<&REF_DeserializeComponent<ECS::AtmosphereComponent>, entt::as_void_t>("deserialize"_hs);
+entt::meta<ECS::AtmosphereComponent>().func<&REF_SetEnabled<ECS::AtmosphereComponent>, entt::as_void_t>("setEnabled"_hs);
+entt::meta<ECS::AtmosphereComponent>().func<&REF_Get<ECS::AtmosphereComponent>, entt::as_ref_t>("get"_hs);
+entt::meta<ECS::AtmosphereComponent>().func<&REF_Reset<ECS::AtmosphereComponent>, entt::as_void_t>("reset"_hs);
+entt::meta<ECS::AtmosphereComponent>().func<&REF_Has<ECS::AtmosphereComponent>, entt::as_is_t>("has"_hs);
+entt::meta<ECS::AtmosphereComponent>().func<&REF_Remove<ECS::AtmosphereComponent>, entt::as_void_t>("remove"_hs);
+entt::meta<ECS::AtmosphereComponent>().func<&REF_Copy<ECS::AtmosphereComponent>, entt::as_void_t>("copy"_hs);
+entt::meta<ECS::AtmosphereComponent>().func<&REF_Paste<ECS::AtmosphereComponent>, entt::as_void_t>("paste"_hs);
 entt::meta<ECS::PhysicsComponent>().type().props(std::make_pair("Title"_hs, "Physics Component"), std::make_pair("Icon"_hs,ICON_FA_APPLE_ALT), std::make_pair("Category"_hs,""), std::make_pair("CanAddComponent"_hs, "0"));
 entt::meta<ECS::PhysicsComponent>().data<&ECS::PhysicsComponent::m_isEnabled>("m_isEnabled"_hs);
 entt::meta<ECS::PhysicsComponent>().func<&REF_CloneComponent<ECS::PhysicsComponent>, entt::as_void_t>("clone"_hs);
@@ -213,20 +226,6 @@ entt::meta<ECS::EntityDataComponent>().func<&REF_Has<ECS::EntityDataComponent>, 
 entt::meta<ECS::EntityDataComponent>().func<&REF_Remove<ECS::EntityDataComponent>, entt::as_void_t>("remove"_hs);
 entt::meta<ECS::EntityDataComponent>().func<&REF_Copy<ECS::EntityDataComponent>, entt::as_void_t>("copy"_hs);
 entt::meta<ECS::EntityDataComponent>().func<&REF_Paste<ECS::EntityDataComponent>, entt::as_void_t>("paste"_hs);
-entt::meta<ECS::ModelNodeComponent>().type().props(std::make_pair("Title"_hs, "Model Node"), std::make_pair("Icon"_hs,ICON_FA_CUBES), std::make_pair("Category"_hs,"Rendering"), std::make_pair("CanAddComponent"_hs, "0"));
-entt::meta<ECS::ModelNodeComponent>().data<&ECS::ModelNodeComponent::m_isEnabled>("m_isEnabled"_hs);
-entt::meta<ECS::ModelNodeComponent>().data<&ECS::ModelNodeComponent::m_materialsNames>("m_materialsNames"_hs).props(std::make_pair("Title"_hs,"Materials_Names"),std::make_pair("Type"_hs,""),std::make_pair("Tooltip"_hs,""),std::make_pair("Depends"_hs,""_hs), std::make_pair("Category"_hs, ""));
-entt::meta<ECS::ModelNodeComponent>().data<&ECS::ModelNodeComponent::m_materials>("m_materials"_hs).props(std::make_pair("Title"_hs,"Materials"),std::make_pair("Type"_hs,"MaterialArray"),std::make_pair("Tooltip"_hs,""),std::make_pair("Depends"_hs,""_hs), std::make_pair("Category"_hs, ""));
-entt::meta<ECS::ModelNodeComponent>().func<&REF_CloneComponent<ECS::ModelNodeComponent>, entt::as_void_t>("clone"_hs);
-entt::meta<ECS::ModelNodeComponent>().func<&REF_SerializeComponent<ECS::ModelNodeComponent>, entt::as_void_t>("serialize"_hs);
-entt::meta<ECS::ModelNodeComponent>().func<&REF_DeserializeComponent<ECS::ModelNodeComponent>, entt::as_void_t>("deserialize"_hs);
-entt::meta<ECS::ModelNodeComponent>().func<&REF_SetEnabled<ECS::ModelNodeComponent>, entt::as_void_t>("setEnabled"_hs);
-entt::meta<ECS::ModelNodeComponent>().func<&REF_Get<ECS::ModelNodeComponent>, entt::as_ref_t>("get"_hs);
-entt::meta<ECS::ModelNodeComponent>().func<&REF_Reset<ECS::ModelNodeComponent>, entt::as_void_t>("reset"_hs);
-entt::meta<ECS::ModelNodeComponent>().func<&REF_Has<ECS::ModelNodeComponent>, entt::as_is_t>("has"_hs);
-entt::meta<ECS::ModelNodeComponent>().func<&REF_Remove<ECS::ModelNodeComponent>, entt::as_void_t>("remove"_hs);
-entt::meta<ECS::ModelNodeComponent>().func<&REF_Copy<ECS::ModelNodeComponent>, entt::as_void_t>("copy"_hs);
-entt::meta<ECS::ModelNodeComponent>().func<&REF_Paste<ECS::ModelNodeComponent>, entt::as_void_t>("paste"_hs);
 entt::meta<ECS::CameraComponent>().type().props(std::make_pair("Title"_hs, "Camera Component"), std::make_pair("Icon"_hs,ICON_FA_EYE), std::make_pair("Category"_hs,"Rendering"), std::make_pair("CanAddComponent"_hs, "1"));
 entt::meta<ECS::CameraComponent>().data<&ECS::CameraComponent::m_isEnabled>("m_isEnabled"_hs);
 entt::meta<ECS::CameraComponent>().data<&ECS::CameraComponent::m_isActive>("m_isActive"_hs).props(std::make_pair("Title"_hs,"Is Active"),std::make_pair("Type"_hs,"Bool"),std::make_pair("Tooltip"_hs,""),std::make_pair("Depends"_hs,""_hs), std::make_pair("Category"_hs, ""));
@@ -323,6 +322,20 @@ entt::meta<ECS::DirectionalLightComponent>().func<&REF_Remove<ECS::DirectionalLi
 entt::meta<ECS::DirectionalLightComponent>().func<&REF_Copy<ECS::DirectionalLightComponent>, entt::as_void_t>("copy"_hs);
 entt::meta<ECS::DirectionalLightComponent>().func<&REF_Paste<ECS::DirectionalLightComponent>, entt::as_void_t>("paste"_hs);
 entt::meta<ECS::DirectionalLightComponent>().func<&REF_Add<ECS::DirectionalLightComponent>, entt::as_void_t>("add"_hs);
+entt::meta<ECS::ModelNodeComponent>().type().props(std::make_pair("Title"_hs, "Model Node"), std::make_pair("Icon"_hs,ICON_FA_CUBES), std::make_pair("Category"_hs,"Rendering"), std::make_pair("CanAddComponent"_hs, "0"));
+entt::meta<ECS::ModelNodeComponent>().data<&ECS::ModelNodeComponent::m_isEnabled>("m_isEnabled"_hs);
+entt::meta<ECS::ModelNodeComponent>().data<&ECS::ModelNodeComponent::m_materialsNames>("m_materialsNames"_hs).props(std::make_pair("Title"_hs,"Materials_Names"),std::make_pair("Type"_hs,""),std::make_pair("Tooltip"_hs,""),std::make_pair("Depends"_hs,""_hs), std::make_pair("Category"_hs, ""));
+entt::meta<ECS::ModelNodeComponent>().data<&ECS::ModelNodeComponent::m_materials>("m_materials"_hs).props(std::make_pair("Title"_hs,"Materials"),std::make_pair("Type"_hs,"MaterialArray"),std::make_pair("Tooltip"_hs,""),std::make_pair("Depends"_hs,""_hs), std::make_pair("Category"_hs, ""));
+entt::meta<ECS::ModelNodeComponent>().func<&REF_CloneComponent<ECS::ModelNodeComponent>, entt::as_void_t>("clone"_hs);
+entt::meta<ECS::ModelNodeComponent>().func<&REF_SerializeComponent<ECS::ModelNodeComponent>, entt::as_void_t>("serialize"_hs);
+entt::meta<ECS::ModelNodeComponent>().func<&REF_DeserializeComponent<ECS::ModelNodeComponent>, entt::as_void_t>("deserialize"_hs);
+entt::meta<ECS::ModelNodeComponent>().func<&REF_SetEnabled<ECS::ModelNodeComponent>, entt::as_void_t>("setEnabled"_hs);
+entt::meta<ECS::ModelNodeComponent>().func<&REF_Get<ECS::ModelNodeComponent>, entt::as_ref_t>("get"_hs);
+entt::meta<ECS::ModelNodeComponent>().func<&REF_Reset<ECS::ModelNodeComponent>, entt::as_void_t>("reset"_hs);
+entt::meta<ECS::ModelNodeComponent>().func<&REF_Has<ECS::ModelNodeComponent>, entt::as_is_t>("has"_hs);
+entt::meta<ECS::ModelNodeComponent>().func<&REF_Remove<ECS::ModelNodeComponent>, entt::as_void_t>("remove"_hs);
+entt::meta<ECS::ModelNodeComponent>().func<&REF_Copy<ECS::ModelNodeComponent>, entt::as_void_t>("copy"_hs);
+entt::meta<ECS::ModelNodeComponent>().func<&REF_Paste<ECS::ModelNodeComponent>, entt::as_void_t>("paste"_hs);
 entt::meta<ECS::ReflectionAreaComponent>().type().props(std::make_pair("Title"_hs, "Reflection Area"), std::make_pair("Icon"_hs,ICON_FA_MOUNTAIN), std::make_pair("Category"_hs,"Rendering"), std::make_pair("CanAddComponent"_hs, "1"));
 entt::meta<ECS::ReflectionAreaComponent>().data<&ECS::ReflectionAreaComponent::m_isEnabled>("m_isEnabled"_hs);
 entt::meta<ECS::ReflectionAreaComponent>().data<&ECS::ReflectionAreaComponent::m_drawDebug>("m_drawDebug"_hs).props(std::make_pair("Title"_hs,"Draw Debug"),std::make_pair("Type"_hs,"Bool"),std::make_pair("Tooltip"_hs,"Enables debug drawing for this component."),std::make_pair("Depends"_hs,""_hs), std::make_pair("Category"_hs, ""));
@@ -401,6 +414,8 @@ entt::meta<Graphics::Material>().data<&Graphics::Material::m_receivesEnvironment
         //REGFUNC_END - !! DO NOT CHANGE THIS LINE !!
     }
 } // namespace Lina
+
+
 
 
 
