@@ -95,6 +95,22 @@ namespace Lina::ECS
         {
             return m_capsuleHalfHeight;
         }
+        float GetBodySurfaceArea()
+        {
+            return m_surfaceArea;
+        }
+        float GetMaxThrust()
+        {
+            return m_maxThrust;
+        }
+        float GetLiftCoef()
+        {
+            return m_liftCoef;
+        }
+        float GetDragCoef()
+        {
+            return m_dragCoef;
+        }
         bool GetIsKinematic()
         {
             return m_isKinematic;
@@ -130,7 +146,12 @@ namespace Lina::ECS
         Vector3                                             m_angularVelocity   = Vector3::Zero;
         float                                               m_mass              = 1.0f;
         float                                               m_radius            = 1.0f;
+        float                                               m_surfaceArea       = 1.0f;
+        float                                               m_maxThrust         = 1.0f;
+        float                                               m_liftCoef          = 1.0f;     // 
+        float                                               m_dragCoef          = 1.0f;     // 
         float                                               m_capsuleHalfHeight = 1.0f;
+        Vector3                                             m_totalForce        = 0.0f;
         bool                                                m_isKinematic       = true;
         Resources::ResourceHandle<Physics::PhysicsMaterial> m_material;
 
@@ -153,7 +174,7 @@ namespace Lina::ECS
         template <class Archive>
         void serialize(Archive& archive)
         {
-            archive(m_collisionShape, m_material, m_simType, m_halfExtents, m_mass, m_radius, m_capsuleHalfHeight, m_isKinematic, m_isEnabled);
+            archive(m_collisionShape, m_material, m_simType, m_halfExtents, m_totalForce, m_mass, m_radius, m_surfaceArea, m_maxThrust, m_liftCoef, m_dragCoef, m_capsuleHalfHeight, m_isKinematic, m_isEnabled);
         }
     };
 } // namespace Lina::ECS

@@ -404,12 +404,14 @@ namespace Lina::Physics
 
         PxShape* shape = m_shapes[body];
         auto&    data  = ECS::Registry::Get()->get<ECS::EntityDataComponent>(body);
+        phy.m_liftCoef = 0.55f;
 
         if (phy.m_collisionShape == CollisionShape::Sphere)
         {
             PxSphereGeometry geo;
             shape->getSphereGeometry(geo);
             geo.radius = phy.m_radius * data.GetScale().Avg();
+            phy.m_dragCoef = 0.47f;
             shape->setGeometry(geo);
         }
         else if (phy.m_collisionShape == CollisionShape::Box)
@@ -417,6 +419,7 @@ namespace Lina::Physics
             PxBoxGeometry geo;
             shape->getBoxGeometry(geo);
             geo.halfExtents = ToPxVector3(phy.m_halfExtents * data.GetScale());
+            phy.m_dragCoef  = 1.05f;
             shape->setGeometry(geo);
         }
         else if (phy.m_collisionShape == CollisionShape::Capsule)
@@ -428,7 +431,7 @@ namespace Lina::Physics
             geo.halfHeight = phy.m_capsuleHalfHeight * data.GetScale().y;
             shape->setGeometry(geo);
         }
-        else if (phy.m_collisionShape == CollisionShape::ConvexMesh)
+        else if (phy.m_collisionShape == CollisionShape::ConvexMesh)    // Currently will crash the engine if loaded
         {
             PxConvexMeshGeometry geo;
             shape->getConvexMeshGeometry(geo);
@@ -479,6 +482,54 @@ namespace Lina::Physics
             if (!kinematic)
                 act->wakeUp();
         }
+    }
+
+    void PhysXPhysicsEngine::SetBodyWingArea(ECS::Entity body, float surfaceArea)
+    {
+        auto& phy = ECS::Registry::Get()->get<ECS::PhysicsComponent>(body);
+
+        phy.m_surfaceArea = surfaceArea;
+    }
+
+    void PhysXPhysicsEngine::SetBodyThrust(ECS::Entity body, float maxThrust)
+    {
+        auto& phy = ECS::Registry::Get()->get<ECS::PhysicsComponent>(body);
+
+        phy.m_maxThrust = maxThrust;
+    }
+
+    void PhysXPhysicsEngine::SetLiftCoef(ECS::Entity body, float liftCoef)
+    {
+        auto& phy = ECS::Registry::Get()->get<ECS::PhysicsComponent>(body);
+
+        phy.m_liftCoef = liftCoef;
+    }
+
+    void PhysXPhysicsEngine::SetDragCoef(ECS::Entity body, float dragCoef)
+    {
+        auto& phy = ECS::Registry::Get()->get<ECS::PhysicsComponent>(body);
+
+        phy.m_dragCoef = dragCoef;
+    }
+
+    void PhysXPhysicsEngine::moveForward(ECS::Entity body)
+    {
+        auto& phy = ECS::Registry::Get()->get<ECS::PhysicsComponent>(body);
+        phy.m_totalForce += phy.m_maxThrust;
+    }
+
+    void PhysXPhysicsEngine::GenerateLift(ECS::Entity body)
+    {
+        auto&  phy  = ECS::Registry::Get()->get<ECS::PhysicsComponent>(body);
+        // Magnitude of lift generated from the object, given in positive Y axis relative to the object
+        double lift = phy.GetLiftCoef() * (airDensity * pow(phy.GetVelocity().Magnitude(), 2) / 2) * phy.GetBodySurfaceArea();
+    }
+
+    void PhysXPhysicsEngine::GenerateDrag(ECS::Entity body)
+    {
+        auto& phy = ECS::Registry::Get()->get<ECS::PhysicsComponent>(body);
+        // Magnitude of drag, applied in the vector opposite of movement
+        double drag = airDensity * (pow(phy.GetVelocity().Magnitude(), 2) / 2) * phy.GetHalfExtents().x * phy.GetDragCoef();
     }
 
     void PhysXPhysicsEngine::OnLevelInstalled(const Event::ELevelInstalled& ev)
