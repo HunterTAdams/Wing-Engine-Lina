@@ -484,54 +484,6 @@ namespace Lina::Physics
         }
     }
 
-    void PhysXPhysicsEngine::SetBodyWingArea(ECS::Entity body, float surfaceArea)
-    {
-        auto& phy = ECS::Registry::Get()->get<ECS::PhysicsComponent>(body);
-
-        phy.m_surfaceArea = surfaceArea;
-    }
-
-    void PhysXPhysicsEngine::SetBodyThrust(ECS::Entity body, float maxThrust)
-    {
-        auto& phy = ECS::Registry::Get()->get<ECS::PhysicsComponent>(body);
-
-        phy.m_maxThrust = maxThrust;
-    }
-
-    void PhysXPhysicsEngine::SetLiftCoef(ECS::Entity body, float liftCoef)
-    {
-        auto& phy = ECS::Registry::Get()->get<ECS::PhysicsComponent>(body);
-
-        phy.m_liftCoef = liftCoef;
-    }
-
-    void PhysXPhysicsEngine::SetDragCoef(ECS::Entity body, float dragCoef)
-    {
-        auto& phy = ECS::Registry::Get()->get<ECS::PhysicsComponent>(body);
-
-        phy.m_dragCoef = dragCoef;
-    }
-
-    void PhysXPhysicsEngine::moveForward(ECS::Entity body)
-    {
-        auto& phy = ECS::Registry::Get()->get<ECS::PhysicsComponent>(body);
-        phy.m_totalForce += phy.m_maxThrust;
-    }
-
-    void PhysXPhysicsEngine::GenerateLift(ECS::Entity body)
-    {
-        auto&  phy  = ECS::Registry::Get()->get<ECS::PhysicsComponent>(body);
-        // Magnitude of lift generated from the object, given in positive Y axis relative to the object
-        double lift = phy.GetLiftCoef() * (airDensity * pow(phy.GetVelocity().Magnitude(), 2) / 2) * phy.GetBodySurfaceArea();
-    }
-
-    void PhysXPhysicsEngine::GenerateDrag(ECS::Entity body)
-    {
-        auto& phy = ECS::Registry::Get()->get<ECS::PhysicsComponent>(body);
-        // Magnitude of drag, applied in the vector opposite of movement
-        double drag = airDensity * (pow(phy.GetVelocity().Magnitude(), 2) / 2) * phy.GetHalfExtents().x * phy.GetDragCoef();
-    }
-
     void PhysXPhysicsEngine::OnLevelInstalled(const Event::ELevelInstalled& ev)
     {
         ECS::Registry::Get()->on_destroy<ECS::PhysicsComponent>().connect<&PhysXPhysicsEngine::OnPhysicsComponentRemoved>(this);

@@ -145,14 +145,7 @@ namespace Lina::Physics
         void SetBodyHeight(ECS::Entity body, float height);
         void SetBodyHalfExtents(ECS::Entity body, const Vector3& extents);
         void SetBodyKinematic(ECS::Entity body, bool kinematic);
-        void SetBodyWingArea(ECS::Entity body, float surfaceArea);
-        void SetBodyThrust(ECS::Entity body, float maxThrust);
-        void SetLiftCoef(ECS::Entity body, float liftCoef);
-        void SetDragCoef(ECS::Entity body, float dragCoef);
         void UpdateBodyShapeParameters(ECS::Entity body);
-        void moveForward(ECS::Entity body);
-        void GenerateLift(ECS::Entity body);
-        void GenerateDrag(ECS::Entity body);
 
         void SetDebugDraw(bool enabled)
         {
