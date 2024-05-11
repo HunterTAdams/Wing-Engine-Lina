@@ -404,12 +404,14 @@ namespace Lina::Physics
 
         PxShape* shape = m_shapes[body];
         auto&    data  = ECS::Registry::Get()->get<ECS::EntityDataComponent>(body);
+        phy.m_liftCoef = 0.55f;
 
         if (phy.m_collisionShape == CollisionShape::Sphere)
         {
             PxSphereGeometry geo;
             shape->getSphereGeometry(geo);
             geo.radius = phy.m_radius * data.GetScale().Avg();
+            phy.m_dragCoef = 0.47f;
             shape->setGeometry(geo);
         }
         else if (phy.m_collisionShape == CollisionShape::Box)
@@ -417,6 +419,7 @@ namespace Lina::Physics
             PxBoxGeometry geo;
             shape->getBoxGeometry(geo);
             geo.halfExtents = ToPxVector3(phy.m_halfExtents * data.GetScale());
+            phy.m_dragCoef  = 1.05f;
             shape->setGeometry(geo);
         }
         else if (phy.m_collisionShape == CollisionShape::Capsule)
@@ -428,7 +431,7 @@ namespace Lina::Physics
             geo.halfHeight = phy.m_capsuleHalfHeight * data.GetScale().y;
             shape->setGeometry(geo);
         }
-        else if (phy.m_collisionShape == CollisionShape::ConvexMesh)
+        else if (phy.m_collisionShape == CollisionShape::ConvexMesh)    // Currently will crash the engine if loaded
         {
             PxConvexMeshGeometry geo;
             shape->getConvexMeshGeometry(geo);

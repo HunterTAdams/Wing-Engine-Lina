@@ -38,6 +38,7 @@ Timestamp: 9/30/2020 2:46:27 AM
 
 #include "Core/CommonPhysics.hpp"
 #include "ECS/Component.hpp"
+#include "ECS/Components/EntityDataComponent.hpp"
 #include "Math/Vector.hpp"
 #include "Resources/ResourceHandle.hpp"
 namespace Lina
@@ -95,6 +96,26 @@ namespace Lina::ECS
         {
             return m_capsuleHalfHeight;
         }
+        float GetBodySurfaceArea()
+        {
+            return m_surfaceArea;
+        }
+        float GetBodyCrossArea()
+        {
+            return m_crossArea;
+        }
+        float GetMaxThrust()
+        {
+            return m_maxThrust;
+        }
+        float GetLiftCoef()
+        {
+            return m_liftCoef;
+        }
+        float GetDragCoef()
+        {
+            return m_dragCoef;
+        }
         bool GetIsKinematic()
         {
             return m_isKinematic;
@@ -108,6 +129,16 @@ namespace Lina::ECS
             return m_simType;
         }
         
+        void SetBodyWingArea(float surfaceArea);
+        void SetBodyCrossArea(float crossArea);
+        void SetBodyThrust(float maxThrust);
+        void SetLiftCoef(float liftCoef);
+        void SetDragCoef(float dragCoef);
+
+        void moveForward(EntityDataComponent & d);
+        void GenerateLift(EntityDataComponent & d);
+        void GenerateDrag(EntityDataComponent & d);
+
         StringIDType m_attachedModelID = 0;
 
     private:
@@ -130,7 +161,13 @@ namespace Lina::ECS
         Vector3                                             m_angularVelocity   = Vector3::Zero;
         float                                               m_mass              = 1.0f;
         float                                               m_radius            = 1.0f;
+        float                                               m_surfaceArea       = 1.0f;
+        float                                               m_crossArea         = 1.0f;
+        float                                               m_maxThrust         = 1.0f;
+        float                                               m_liftCoef          = 1.0f;     // 
+        float                                               m_dragCoef          = 1.0f;     // 
         float                                               m_capsuleHalfHeight = 1.0f;
+        Vector3                                             m_totalForce        = Vector3::Zero;
         bool                                                m_isKinematic       = true;
         Resources::ResourceHandle<Physics::PhysicsMaterial> m_material;
 
@@ -138,6 +175,7 @@ namespace Lina::ECS
         {
             m_velocity        = Vector3::Zero;
             m_angularVelocity = Vector3::Zero;
+            m_totalForce      = Vector3::Zero;
             m_simType         = Physics::SimulationType::None;
         }
 
@@ -153,7 +191,7 @@ namespace Lina::ECS
         template <class Archive>
         void serialize(Archive& archive)
         {
-            archive(m_collisionShape, m_material, m_simType, m_halfExtents, m_mass, m_radius, m_capsuleHalfHeight, m_isKinematic, m_isEnabled);
+            archive(m_collisionShape, m_material, m_simType, m_halfExtents, m_totalForce, m_mass, m_radius, m_surfaceArea, m_crossArea, m_maxThrust, m_liftCoef, m_dragCoef, m_capsuleHalfHeight, m_isKinematic, m_isEnabled);
         }
     };
 } // namespace Lina::ECS
