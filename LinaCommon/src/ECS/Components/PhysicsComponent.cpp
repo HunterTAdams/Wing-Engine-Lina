@@ -63,23 +63,24 @@ namespace Lina::ECS
 
     void PhysicsComponent::moveForward(EntityDataComponent& d)
     {
-        Vector3 heading = d.GetLocalLocation() + Vector3(1, 0, 0);
-        m_totalForce += m_maxThrust;
+        Vector3 heading = (d.GetLocalLocation() + Vector3::Forward);
+        Vector3 direction = d.GetLocalLocation() - heading;
+        m_totalForce += direction.Normalized() * m_maxThrust;
     }
 
     void PhysicsComponent::GenerateLift(EntityDataComponent& d)
     {
         // Magnitude of lift generated from the object, given in positive Y axis relative to the object
-        Vector3 heading = d.GetLocalLocation() + Vector3(0, 1, 0);
-        double lift = GetLiftCoef() * (airDensity * pow(GetVelocity().Magnitude(), 2) / 2) * GetBodySurfaceArea();
+        Vector3 top = d.GetLocalLocation() + Vector3::Up;
+        //double lift = GetLiftCoef() * (airDensity * pow(GetVelocity().Magnitude(), 2) / 2) * GetBodySurfaceArea();
         Vector3 liftForce;
     }
 
     void PhysicsComponent::GenerateDrag(EntityDataComponent& d)
     {
         // Magnitude of drag, applied in the vector opposite of movement
-        double drag = airDensity * (pow(GetVelocity().Magnitude(), 2) / 2) * GetBodyCrossArea() * GetDragCoef();
+        //double drag = airDensity * (pow(GetVelocity().Magnitude(), 2) / 2) * GetBodyCrossArea() * GetDragCoef();
         Vector3 dragForce = -1 * m_velocity;
-        m_totalForce += dragForce.Normalize() * drag;
+        //m_totalForce += dragForce.Normalized() * drag;
     }
 } // namespace Lina::ECS
