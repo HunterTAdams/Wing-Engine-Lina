@@ -26,6 +26,7 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 */
 #include "Panels/LevelPanel.hpp"
+#include "Core/Backend/PhysX/PhysXPhysicsEngine.hpp"
 
 #include "Core/Application.hpp"
 #include "Core/CommonECS.hpp"
@@ -37,9 +38,11 @@ SOFTWARE.
 #include "Core/InputMappings.hpp"
 #include "Core/RenderEngineBackend.hpp"
 #include "ECS/Components/CameraComponent.hpp"
+#include "ECS/Components/AtmosphereComponent.hpp"
 #include "ECS/Components/EntityDataComponent.hpp"
 #include "ECS/Components/MeshRendererComponent.hpp"
 #include "ECS/Components/ModelRendererComponent.hpp"
+#include "ECS/Systems/EditorEntitySystem.hpp"
 #include "EventSystem/GraphicsEvents.hpp"
 #include "EventSystem/LevelEvents.hpp"
 #include "IconsFontAwesome5.h"
@@ -56,6 +59,7 @@ static Matrix gridLineMatrix = Matrix::Identity();
 static Matrix modelMatrix    = Matrix::Identity();
 #define GRID_SIZE 1000
 
+using namespace physx;
 namespace Lina::Editor
 {
     ImGuizmo::OPERATION GetOperationFromInt(int i)
@@ -83,8 +87,10 @@ namespace Lina::Editor
         Event::EventSystem::Get()->Connect<ETransformGizmoChanged, &LevelPanel::OnTransformGizmoChanged>(this);
         Event::EventSystem::Get()->Connect<ETransformPivotChanged, &LevelPanel::OnTransformPivotChanged>(this);
         Event::EventSystem::Get()->Connect<EShortcut, &LevelPanel::OnShortcut>(this);
+        Event::EventSystem::Get()->Connect<Event::EKeyCallback, &LevelPanel::KeyMovementInput>(this);
         Event::EventSystem::Get()->Connect<Event::EKeyCallback, &LevelPanel::OnKeyCallback>(this);
         Event::EventSystem::Get()->Connect<Event::EMouseButtonCallback, &LevelPanel::OnMouseButtonCallback>(this);
+        m_entitySystem = EditorApplication::Get()->GetEntitySystem();
 
         m_shouldShowGizmos      = true;
         m_isTransformModeGlobal = true;
@@ -212,6 +218,7 @@ namespace Lina::Editor
     void LevelPanel::EntitySelected(const EEntitySelected& ev)
     {
         m_selectedEntity = ev.m_entity;
+        m_entitySystem.SetEditorEntity(m_selectedEntity);
     }
 
     void LevelPanel::Unselected(const EEntityUnselected& ev)
@@ -257,6 +264,25 @@ namespace Lina::Editor
                     }
                 });
             }
+        }
+    }
+
+    void LevelPanel::KeyMovementInput(const Event::EKeyCallback& ev)
+    {
+        auto*                     reg = ECS::Registry::Get();
+        ECS::EntityDataComponent& data = reg->get<ECS::EntityDataComponent>(m_selectedEntity);
+        ECS::PhysicsComponent&    phy  = reg->get<ECS::PhysicsComponent>(m_selectedEntity);
+        ECS::AtmosphereComponent& atm  = reg->get<ECS::AtmosphereComponent>(m_selectedEntity);
+
+        if (m_selectedEntity != entt::null)
+        {
+            if (ev.m_action == Input::InputAction::Pressed && ev.m_key == LINA_KEY_RSHIFT || ev.m_action == Input::InputAction::Repeated && ev.m_key == LINA_KEY_RSHIFT)
+                m_entitySystem.moveForward();
+            //if (ev.m_action == Input::InputAction::Pressed && ev.m_key == LINA_KEY_RIGHT || ev.m_action == Input::InputAction::Repeated && ev.m_key == LINA_KEY_RIGHT ||
+            //    ev.m_action == Input::InputAction::Pressed && ev.m_key == LINA_KEY_LEFT || ev.m_action == Input::InputAction::Repeated && ev.m_key == LINA_KEY_LEFT ||
+            //    ev.m_action == Input::InputAction::Pressed && ev.m_key == LINA_KEY_UP || ev.m_action == Input::InputAction::Repeated && ev.m_key == LINA_KEY_UP ||
+            //    ev.m_action == Input::InputAction::Pressed && ev.m_key == LINA_KEY_DOWN || ev.m_action == Input::InputAction::Repeated && ev.m_key == LINA_KEY_DOWN)
+            //    m_entitySystem.RotateBehavior();
         }
     }
 

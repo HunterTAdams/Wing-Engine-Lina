@@ -32,6 +32,8 @@ SOFTWARE.
 #include "ECS/Components/LightComponent.hpp"
 #include "ECS/Components/CameraComponent.hpp"
 #include "ECS/Components/AtmosphereComponent.hpp"
+#include "ECS/Components/PhysicsComponent.hpp"
+#include "Core/PhysicsBackend.hpp"
 
 namespace Lina::World
 {
@@ -67,6 +69,10 @@ namespace Lina::World
         auto&       atmosphereData = m_registry.get<ECS::EntityDataComponent>(atmosphere);
         auto&       atmosphereComponent = m_registry.emplace<ECS::AtmosphereComponent>(atmosphere);
         atmosphereData.SetLocation(Vector3(0, 0, 0));
+
+        // Test Flight Box
+        auto* box = Resources::ResourceStorage::Get()->GetResource<Graphics::Model>("Resources/Engine/Meshes/Primitives/Cube.fbx");
+        Graphics::RenderEngineBackend::Get()->GetModelNodeSystem()->CreateModelHierarchy(box);
     }
 
 } // namespace Lina::World

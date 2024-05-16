@@ -336,6 +336,36 @@ namespace Lina::Physics
             PxRigidBodyExt::updateMassAndInertia(*(PxRigidDynamic*)m_actors[body], phy.m_mass);
     }
 
+    void PhysXPhysicsEngine::SetBodyWingArea(ECS::Entity body, float surfaceArea)
+    {
+        auto& phy     = ECS::Registry::Get()->get<ECS::PhysicsComponent>(body);
+        phy.m_surfaceArea = Math::Clamp(surfaceArea, 0.1f, 1000.0f);
+    }
+
+    void PhysXPhysicsEngine::SetBodyCrossArea(ECS::Entity body, float crossArea)
+    {
+        auto& phy   = ECS::Registry::Get()->get<ECS::PhysicsComponent>(body);
+        phy.m_crossArea = Math::Clamp(crossArea, 0.1f, 1000.0f);
+    }
+
+    void PhysXPhysicsEngine::SetBodyThrust(ECS::Entity body, float maxThrust)
+    {
+        auto& phy   = ECS::Registry::Get()->get<ECS::PhysicsComponent>(body);
+        phy.m_maxThrust = Math::Clamp(maxThrust, 1.0f, 1000.0f);
+    }
+
+    void PhysXPhysicsEngine::SetLiftCoef(ECS::Entity body, float liftCoef)
+    {
+        auto& phy  = ECS::Registry::Get()->get<ECS::PhysicsComponent>(body);
+        phy.m_liftCoef = Math::Clamp(liftCoef, 0.1f, 10.0f);
+    }
+
+    void PhysXPhysicsEngine::SetDragCoef(ECS::Entity body, float dragCoef)
+    {
+        auto& phy  = ECS::Registry::Get()->get<ECS::PhysicsComponent>(body);
+        phy.m_dragCoef = Math::Clamp(dragCoef, 0.1f, 10.0f);
+    }
+
     void PhysXPhysicsEngine::SetBodyMaterial(ECS::Entity body, PhysicsMaterial* material)
     {
         if (!IsEntityAPhysicsActor(body))

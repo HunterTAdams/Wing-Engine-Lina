@@ -108,8 +108,12 @@ namespace Lina::ECS
                     {
                         PxRigidDynamic* rigid = static_cast<PxRigidDynamic*>(activeActors[i]);
                         auto&           pose  = rigid->getGlobalPose();
+                        rigid->addTorque(Physics::ToPxVector3(phyComp.m_torque), PxForceMode::eFORCE);
+                        rigid->addForce(Physics::ToPxVector3(phyComp.m_totalForce), PxForceMode::eFORCE);
                         data.SetLocation(Physics::ToLinaVector3(pose.p));
                         data.SetRotation(Physics::ToLinaQuat(pose.q));
+                        phyComp.m_torque     = 0;
+                        phyComp.m_totalForce = 0;
                     }
                 }
             }

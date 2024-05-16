@@ -32,6 +32,7 @@ src/Core/ImGuiCommon.cpp
 
 # ECS
 src/ECS/Systems/EditorCameraSystem.cpp
+src/ECS/Systems/EditorEntitySystem.cpp
 
 #Drawers
 src/Drawers/EntityDrawer.cpp
@@ -115,6 +116,7 @@ include/Core/ImGuiCommon.hpp
 
 # ECS
 include/ECS/Systems/EditorCameraSystem.hpp
+include/ECS/Systems/EditorEntitySystem.hpp
 
 #Drawers
 include/Drawers/EntityDrawer.hpp

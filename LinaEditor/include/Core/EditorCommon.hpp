@@ -132,6 +132,7 @@ namespace Lina::Editor
     };
 
 #define EDITOR_CAMERA_NAME        "Editor Camera"
+#define EDITOR_CUBE_NAME          "Editor Cube"
 #define CURSOR_X_LABELS           12
 #define CURSOR_X_VALUES           ImGui::GetWindowSize().x * 0.3f
 #define DRAG_POWER                0.01f

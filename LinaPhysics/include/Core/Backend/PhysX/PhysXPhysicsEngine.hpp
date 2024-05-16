@@ -140,6 +140,11 @@ namespace Lina::Physics
         void SetBodySimulation(ECS::Entity body, SimulationType type);
         void SetBodyCollisionShape(ECS::Entity body, Physics::CollisionShape shape);
         void SetBodyMass(ECS::Entity body, float mass);
+        void SetBodyWingArea(ECS::Entity body, float surfaceArea);
+        void SetBodyCrossArea(ECS::Entity body, float crossArea);
+        void SetBodyThrust(ECS::Entity body, float maxThrust);
+        void SetLiftCoef(ECS::Entity body, float liftCoef);
+        void SetDragCoef(ECS::Entity body, float dragCoef);
         void SetBodyMaterial(ECS::Entity body, PhysicsMaterial* mat);
         void SetBodyRadius(ECS::Entity body, float radius);
         void SetBodyHeight(ECS::Entity body, float height);

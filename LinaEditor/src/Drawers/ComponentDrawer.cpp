@@ -299,6 +299,38 @@ namespace Lina::Editor
                 physicsEngine->SetBodyMass(entity, phy.m_mass);
             }
 
+            WidgetsUtility::PropertyLabel("Wing Area");
+            const float currentSurfaceArea = phy.m_surfaceArea;
+            WidgetsUtility::DragFloat("##sarea", nullptr, &phy.m_surfaceArea);
+            if (phy.m_surfaceArea != currentSurfaceArea)
+            {
+                physicsEngine->SetBodyWingArea(entity, phy.m_surfaceArea);
+            }
+
+            WidgetsUtility::PropertyLabel("Cross Area");
+            const float currentCrossArea = phy.m_crossArea;
+            WidgetsUtility::DragFloat("##carea", nullptr, &phy.m_crossArea);
+            if (phy.m_crossArea != currentCrossArea)
+            {
+                physicsEngine->SetBodyCrossArea(entity, phy.m_crossArea);
+            }
+
+            WidgetsUtility::PropertyLabel("Max Thrust");
+            const float currentMaxThrust = phy.m_maxThrust;
+            WidgetsUtility::DragFloat("##mthrust", nullptr, &phy.m_maxThrust);
+            if (phy.m_maxThrust != currentMaxThrust)
+            {
+                physicsEngine->SetBodyThrust(entity, phy.m_maxThrust);
+            }
+
+            WidgetsUtility::PropertyLabel("Lift Coefficient");
+            const float currentLiftCoef = phy.m_liftCoef;
+            WidgetsUtility::DragFloat("##lcoef", nullptr, &phy.m_liftCoef);
+            if (phy.m_liftCoef != currentLiftCoef)
+            {
+                physicsEngine->SetLiftCoef(entity, phy.m_liftCoef);
+            }
+
             WidgetsUtility::PropertyLabel("Physics Material");
             const std::string currentMaterial = phy.m_material.m_value->GetPath();
             StringIDType      selected        = WidgetsUtility::ResourceSelectionPhysicsMaterial("entity_phy_mat", &phy.m_material);

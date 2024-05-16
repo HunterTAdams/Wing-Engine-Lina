@@ -41,6 +41,7 @@ Timestamp: 6/5/2020 6:51:29 PM
 
 #include "Core/CommonECS.hpp"
 #include "Panels/EditorPanel.hpp"
+#include "ECS/Systems/EditorEntitySystem.hpp"
 
 namespace Lina
 {
@@ -80,6 +81,7 @@ namespace Lina::Editor
         void        Unselected(const EEntityUnselected& ev);
         void        LevelUninstalled(const Event::ELevelUninstalled& ev);
         void        ProcessInput();
+        void        KeyMovementInput(const Event::EKeyCallback& ev);
         void        DrawGizmos();
         inline void SetDrawMode(DrawMode mode)
         {
@@ -119,6 +121,7 @@ namespace Lina::Editor
         float       m_borderAlpha           = 0.0f;
         bool        m_isFocused             = true;
         bool        m_isHovered             = false;
+        ECS::EditorEntitySystem       m_entitySystem;
         ECS::Entity m_selectedEntity        = entt::null;
         DrawMode    m_drawMode              = DrawMode::FinalImage;
     };

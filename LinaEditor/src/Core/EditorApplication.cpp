@@ -82,7 +82,11 @@ namespace Lina::Editor
         m_editorCameraSystem.Initialize("Editor Camera System", m_guiLayer.GetLevelPanel());
         m_editorCameraSystem.SystemActivation(true);
 
+        m_editorEntitySystem.Initialize("Editor Entity System", m_guiLayer.GetLevelPanel());
+        m_editorEntitySystem.SystemActivation(true);
+
         Engine::Get()->AddToMainPipeline(m_editorCameraSystem);
+        Engine::Get()->AddToMainPipeline(m_editorEntitySystem);
     }
 
     void EditorApplication::OnLevelInstalled(const Event::ELevelInstalled& ev)
@@ -92,6 +96,7 @@ namespace Lina::Editor
         auto singleView = ecs->view<ECS::EntityDataComponent>();
 
         Entity              editorCamera = ecs->CreateEntity(EDITOR_CAMERA_NAME);
+        Entity              editorCube   = ecs->CreateEntity(EDITOR_CUBE_NAME);
         EntityDataComponent cameraTransform;
         CameraComponent     cameraComponent;
         FreeLookComponent   freeLookComponent;
@@ -99,6 +104,7 @@ namespace Lina::Editor
         ecs->emplace<FreeLookComponent>(editorCamera, freeLookComponent);
         Graphics::RenderEngineBackend::Get()->GetCameraSystem()->SetActiveCamera(editorCamera);
         m_editorCameraSystem.SetEditorCamera(editorCamera);
+        m_editorEntitySystem.SetEditorEntity(editorCube);
 
         // When the first level is loaded, iterate all model/material/shader resources & take snapshots for each.
         if (!m_snapshotsTaken)

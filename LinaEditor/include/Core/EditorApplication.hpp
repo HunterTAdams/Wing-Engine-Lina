@@ -42,6 +42,7 @@ Timestamp: 10/15/2020 10:44:39 PM
 
 #include "Core/GUILayer.hpp"
 #include "ECS/Systems/EditorCameraSystem.hpp"
+#include "ECS/Systems/EditorEntitySystem.hpp"
 
 namespace Lina
 {
@@ -98,6 +99,12 @@ namespace Lina::Editor
         {
             return m_editorCameraSystem;
         }
+        
+
+        inline ECS::EditorEntitySystem& GetEntitySystem()
+        {
+            return m_editorEntitySystem;
+        }
 
         Graphics::RenderTarget* AddSnapshotBuffer(StringIDType sid);
         uint32                  GetSnapshotTexture(StringIDType sid);
@@ -116,6 +123,7 @@ namespace Lina::Editor
     private:
         static EditorApplication*                        s_editorApplication;
         ECS::EditorCameraSystem                          m_editorCameraSystem;
+        ECS::EditorEntitySystem                          m_editorEntitySystem;
         GUILayer                                         m_guiLayer;
         std::unordered_map<StringIDType, SnapshotBuffer> m_previewBuffers;
         bool                                             m_snapshotsTaken = false;
