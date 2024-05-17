@@ -331,6 +331,14 @@ namespace Lina::Editor
                 physicsEngine->SetLiftCoef(entity, phy.m_liftCoef);
             }
 
+            WidgetsUtility::PropertyLabel("Air Density");
+            const float currentAirDensity = phy.m_airDensity;
+            WidgetsUtility::DragFloat("##ardn", nullptr, &phy.m_airDensity);
+            if (phy.m_airDensity != currentAirDensity)
+            {
+                physicsEngine->SetAirDensity(entity, phy.m_airDensity);
+            }
+
             WidgetsUtility::PropertyLabel("Physics Material");
             const std::string currentMaterial = phy.m_material.m_value->GetPath();
             StringIDType      selected        = WidgetsUtility::ResourceSelectionPhysicsMaterial("entity_phy_mat", &phy.m_material);

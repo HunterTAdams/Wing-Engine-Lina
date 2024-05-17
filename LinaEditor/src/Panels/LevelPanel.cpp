@@ -272,17 +272,17 @@ namespace Lina::Editor
         auto*                     reg = ECS::Registry::Get();
         ECS::EntityDataComponent& data = reg->get<ECS::EntityDataComponent>(m_selectedEntity);
         ECS::PhysicsComponent&    phy  = reg->get<ECS::PhysicsComponent>(m_selectedEntity);
-        ECS::AtmosphereComponent& atm  = reg->get<ECS::AtmosphereComponent>(m_selectedEntity);
+        //auto atmEnt = reg->GetEntity("Default Atmosphere");
+        //ECS::AtmosphereComponent& atm    = reg->get<ECS::AtmosphereComponent>(atmEnt);
+        //m_entitySystem.GenerateDrag();
+        //atm.getFluidDensity();
 
         if (m_selectedEntity != entt::null)
         {
             if (ev.m_action == Input::InputAction::Pressed && ev.m_key == LINA_KEY_RSHIFT || ev.m_action == Input::InputAction::Repeated && ev.m_key == LINA_KEY_RSHIFT)
+            {
                 m_entitySystem.moveForward();
-            //if (ev.m_action == Input::InputAction::Pressed && ev.m_key == LINA_KEY_RIGHT || ev.m_action == Input::InputAction::Repeated && ev.m_key == LINA_KEY_RIGHT ||
-            //    ev.m_action == Input::InputAction::Pressed && ev.m_key == LINA_KEY_LEFT || ev.m_action == Input::InputAction::Repeated && ev.m_key == LINA_KEY_LEFT ||
-            //    ev.m_action == Input::InputAction::Pressed && ev.m_key == LINA_KEY_UP || ev.m_action == Input::InputAction::Repeated && ev.m_key == LINA_KEY_UP ||
-            //    ev.m_action == Input::InputAction::Pressed && ev.m_key == LINA_KEY_DOWN || ev.m_action == Input::InputAction::Repeated && ev.m_key == LINA_KEY_DOWN)
-            //    m_entitySystem.RotateBehavior();
+            }
         }
     }
 

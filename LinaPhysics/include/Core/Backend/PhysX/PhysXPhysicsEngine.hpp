@@ -145,6 +145,7 @@ namespace Lina::Physics
         void SetBodyThrust(ECS::Entity body, float maxThrust);
         void SetLiftCoef(ECS::Entity body, float liftCoef);
         void SetDragCoef(ECS::Entity body, float dragCoef);
+        void SetAirDensity(ECS::Entity body, float airDensity);
         void SetBodyMaterial(ECS::Entity body, PhysicsMaterial* mat);
         void SetBodyRadius(ECS::Entity body, float radius);
         void SetBodyHeight(ECS::Entity body, float height);

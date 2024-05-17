@@ -366,6 +366,12 @@ namespace Lina::Physics
         phy.m_dragCoef = Math::Clamp(dragCoef, 0.1f, 10.0f);
     }
 
+    void PhysXPhysicsEngine::SetAirDensity(ECS::Entity body, float airDensity)
+    {
+        auto& phy  = ECS::Registry::Get()->get<ECS::PhysicsComponent>(body);
+        phy.m_airDensity = Math::Clamp(airDensity, 0.1f, 1000.0f);
+    }
+
     void PhysXPhysicsEngine::SetBodyMaterial(ECS::Entity body, PhysicsMaterial* material)
     {
         if (!IsEntityAPhysicsActor(body))
@@ -434,7 +440,6 @@ namespace Lina::Physics
 
         PxShape* shape = m_shapes[body];
         auto&    data  = ECS::Registry::Get()->get<ECS::EntityDataComponent>(body);
-        phy.m_liftCoef = 0.55f;
 
         if (phy.m_collisionShape == CollisionShape::Sphere)
         {

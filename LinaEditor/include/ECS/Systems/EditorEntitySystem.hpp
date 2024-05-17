@@ -6,6 +6,7 @@
 #include "Core/CommonECS.hpp"
 #include "Core/InputBackendFwd.hpp"
 #include "ECS/System.hpp"
+#include "ECS/Components/EntityDataComponent.hpp"
 #include "Math/Vector.hpp"
 
 namespace Lina
@@ -33,7 +34,7 @@ namespace Lina::ECS
         {
             return m_rotationSpeeds;
         }
-
+        glm::mat4 getTransform();
         void moveForward();
         void GenerateLift();
         void GenerateDrag();
@@ -41,7 +42,7 @@ namespace Lina::ECS
         void RotateBehavior();
 
     private:
-        float             m_rotationSpeeds = 1;
+        float             m_rotationSpeeds = 1500;
         Entity              m_editorEntity = entt::null;
         Editor::LevelPanel* m_levelPanel;
         Input::InputEngine* m_inputEngine;

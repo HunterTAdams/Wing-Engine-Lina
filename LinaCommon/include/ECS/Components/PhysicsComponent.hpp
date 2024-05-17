@@ -116,6 +116,10 @@ namespace Lina::ECS
         {
             return m_dragCoef;
         }
+        float GetAirDensity()
+        {
+            return m_airDensity;
+        }
         bool GetIsKinematic()
         {
             return m_isKinematic;
@@ -158,6 +162,7 @@ namespace Lina::ECS
         float                                               m_maxThrust         = 1.0f;
         float                                               m_liftCoef          = 1.0f;
         float                                               m_dragCoef          = 1.0f;
+        float                                               m_airDensity        = 1.0f;
         float                                               m_capsuleHalfHeight = 1.0f;
         Vector3                                             m_torque            = Vector3::Zero;
         Vector3                                             m_totalForce        = Vector3::Zero;
@@ -185,7 +190,7 @@ namespace Lina::ECS
         template <class Archive>
         void serialize(Archive& archive)
         {
-            archive(m_collisionShape, m_material, m_simType, m_halfExtents, m_torque, m_totalForce, m_mass, m_radius, m_surfaceArea, m_crossArea, m_maxThrust, m_liftCoef, m_dragCoef, m_capsuleHalfHeight, m_isKinematic, m_isEnabled);
+            archive(m_collisionShape, m_material, m_simType, m_halfExtents, m_torque, m_totalForce, m_mass, m_radius, m_surfaceArea, m_crossArea, m_maxThrust, m_liftCoef, m_dragCoef, m_airDensity, m_capsuleHalfHeight, m_isKinematic, m_isEnabled);
         }
     };
 } // namespace Lina::ECS
